@@ -1,0 +1,21 @@
+flowchart LR
+    EDIT["Edit a content module<br/>copy, price or case entry"]
+    RUN["Run build_all.py"]
+    GEN["16 page generators<br/>run in order"]
+    FAIL{"Exit code 0?"}
+    STOP["Abort the run<br/>print the failing script"]
+    HTML["Write index.html<br/>into the locale tree"]
+    POST["5 post steps<br/>images, social cards, asset hashes"]
+    MAPS["Scan published pages<br/>pair locales, write sitemap.xml<br/>and regenerate redirects"]
+    DEPLOY["Release the output<br/>to hosting"]
+    LIVE["Visitor receives<br/>a static file"]
+
+    EDIT --> RUN
+    RUN --> GEN
+    GEN --> FAIL
+    FAIL -->|"no"| STOP
+    FAIL -->|"yes"| HTML
+    HTML --> POST
+    POST --> MAPS
+    MAPS --> DEPLOY
+    DEPLOY --> LIVE

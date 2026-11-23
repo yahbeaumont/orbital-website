@@ -1,0 +1,33 @@
+# Operating system and editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node, if an example is ever run with a toolchain
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Environment and secrets, never expected here
+.env
+.env.*
+*.pem
+*.key
+
+# Local output from running the examples
+/examples/public/
+/examples/*-demo/
+/out/
+/tmp/
+
+# Rendered diagrams can be regenerated from the .mmd sources
+# (they are committed, so this only ignores ad hoc renders)
+diagrams/*.tmp.png

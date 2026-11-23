@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph Content["Content modules (Python)"]
+        COPY["Language dictionaries<br/>pt-br and en copy"]
+        DATA["Single-source data<br/>prices, model speeds, cases"]
+        SHELL["Shared shell<br/>header, footer, region bar, drawer"]
+    end
+
+    subgraph Pipeline["Build pipeline (tools/)"]
+        ORCH["build_all.py<br/>ordered runner, stops on failure"]
+        GEN["16 page generators<br/>one per page family"]
+        POST["5 post steps<br/>images, social cards,<br/>asset versions, sitemap, redirects"]
+    end
+
+    subgraph Output["Static output"]
+        PAGES["45 routes per language<br/>plain HTML with metadata"]
+        MAPS["sitemap.xml, robots.txt<br/>redirect map, headers"]
+        ASSETS["19 stylesheets<br/>10 scripts, images"]
+    end
+
+    subgraph Edge["Firebase Hosting"]
+        CDN["CDN and TLS<br/>security headers, cache rules"]
+        RULES["Redirect and rewrite rules<br/>legacy paths to locale paths"]
+    end
+
+    subgraph Server["Cloud Functions"]
+        CHECKOUT["Payment session<br/>server-side catalogue"]
+        STATUS["Order status<br/>masked e-mail"]
+        HOOK["Provider webhook<br/>signature verified"]
+        MAIL["Transactional e-mail"]
+    end
+
+    BROWSER["Browser<br/>shell, interactions, bag"]
+
+    COPY --> GEN
+    DATA --> GEN
+    SHELL --> GEN
+    ORCH --> GEN
+    GEN --> PAGES
+    PAGES --> POST
+    POST --> MAPS
+    PAGES --> CDN
+    MAPS --> CDN
+    ASSETS --> CDN
+    RULES --> CDN
+    CDN --> BROWSER
+    BROWSER -->|"identifier and quantity only"| CHECKOUT
+    BROWSER -->|"order id"| STATUS
+    HOOK --> MAIL
+    HOOK -->|"signature check"| CHECKOUT
